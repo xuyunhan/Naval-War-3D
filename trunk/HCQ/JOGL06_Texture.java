@@ -7,49 +7,66 @@ import javax.swing.*;
 import javax.media.opengl.*;
 import javax.media.opengl.glu.GLU;
 
+
+
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.FPSAnimator;
+//import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
+import javax.media.opengl.awt.GLCanvas;  
 
 import common.TextureLoader;
 import java.math.*;
+import java.text.DecimalFormat;
+
+
+
+import java.awt.*;  
+import java.awt.event.*;  
+import javax.swing.*;  
+import javax.media.opengl.*;  
+import com.sun.opengl.util.Animator;  
+import com.sun.opengl.util.FPSAnimator;  
+import javax.media.opengl.awt.GLCanvas; 
+import javax.media.opengl.GLCapabilities;
 
 public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListener, MouseListener
 {
-  private GL gl;
+  private GL2 gl;
   private GLU glu;
   private GLCapabilities caps;
   private GLCanvas canvas;
   private MouseEvent mouse;
-  private Animator animator;//添加一个次类的实例
-  //添加图片，哎 以前都没发现这个有趣的东西，还是不够了解啊
-  //走的太高，内部都没有了解啊
-  private Texture  pngtexture1,pngtexture2; //png图片
-  
+  private Animator animator;
+  private Texture  pngtexture1,pngtexture2;
   private Texture bmptexture[] = new Texture[5];
-  
   private float xrot;//绕X轴
   private float yrot;//绕Y轴
   private float zrot;//绕Z轴
-  
+  private DecimalFormat df = new DecimalFormat("0.##");
+  private String modelName;
+//  private OBJModel model;
+  private float maxSize;
   float focus[] = new float[3];//摄像机焦点位置
   float camera[] = new float[3];//摄像机位置
   int viewangle;
   
-  float	g_eye[]= new float[3];		//
-  float	g_look[]= new float[3];		//
-  float		rad_xz;	
-  float		g_Angle;
-  float		g_elev;	
+  float	 g_eye[]= new float[3];
+  float	 g_look[]= new float[3];
+  float	 rad_xz;	
+  float	 g_Angle;
+  float	 g_elev;	
   
   float MAP = 40;//	MAP_W*MAP_SCALE/2
 
 
   public JOGL06_Texture()
   {
+	  
     super("JOGL06_Texture");
-
-    caps = new GLCapabilities();
+    modelName = "formula";
+    maxSize = 5f;
+    caps = new GLCapabilities(null);
     canvas = new GLCanvas(caps);
     canvas.addGLEventListener(this);
     canvas.addKeyListener(this);
@@ -57,6 +74,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
     getContentPane().add(canvas);
   }
 
+  //程序的调用的主入口
   public void run()
   {
     setSize(800, 600);
@@ -76,16 +94,16 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 
   public void init(GLAutoDrawable drawable)
   {
-	    gl = drawable.getGL();
+	    gl = drawable.getGL().getGL2();
 	    glu = new GLU();  
-	    gl.glShadeModel(GL.GL_SMOOTH);
+	    gl.glShadeModel(GL2.GL_SMOOTH);
 	    gl.glClearColor(0.0f, 0.0f, 0.0f, 0f);
 	    gl.glClearDepth(1.0f);							// 设置深度缓存
 		gl.glEnable(GL.GL_DEPTH_TEST);					// 启用深度测试
 		gl.glDepthFunc(GL.GL_LEQUAL);
-		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);			// 告诉系统对透视进行修正
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);			// 告诉系统对透视进行修正
 	    animator=new Animator(canvas);//实例化对canvas，刷新
-	    
+	//    model = new OBJModel(modelName, maxSize, gl, true);
 	    
 	    focus[0]=7.0f;
 		focus[1]=0.0f;
@@ -110,10 +128,10 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
   //-----------------------
   }
   
-  
+  //绘图函数
   public void display(GLAutoDrawable drawable)
   {
-	GL gl = drawable.getGL();
+	GL2 gl = drawable.getGL().getGL2();
 	gl.glClear(GL.GL_COLOR_BUFFER_BIT|GL.GL_DEPTH_BUFFER_BIT);    //清除颜色缓冲
 	gl.glLoadIdentity();    //重置矩阵
 	gl.glTranslatef(0.0f, 0.0f, -6.0f);    //向内(Z轴负方向)移动6
@@ -160,7 +178,8 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
     zrot += 0.4f;
     
  */
-    
+//    model.draw(gl);
+    gl.glFlush();
     camera();
     CreateSkyBox(3,6,3,6,gl);
     DrawGround(gl);
@@ -168,15 +187,16 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 
   }
 
+  //这部分代码暂时不用改
   public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h)
   {
-	    GL gl = drawable.getGL();
+	    GL2 gl = drawable.getGL().getGL2();
 	    
 	    gl.glViewport(0, 0, w, h);   //视见区域
-	    gl.glMatrixMode(GL.GL_PROJECTION);//哪一个矩阵堆栈
+	    gl.glMatrixMode(GL2.GL_PROJECTION);//哪一个矩阵堆栈
 	    //gl.glLoadIdentity(); //重置矩阵
 	    glu.gluPerspective(45.0, (float) w / (float) h, 1.0, 1000.0);//创建透视矩阵
-	    gl.glMatrixMode(GL.GL_MODELVIEW);
+	    gl.glMatrixMode(GL2.GL_MODELVIEW);
 	    gl.glLoadIdentity();
   }
 
@@ -191,7 +211,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 	
   }
 
-  
+  //摄像机的搭建
   public void camera()
   {
 
@@ -213,7 +233,8 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 
   }
   
-  public void DrawGround(GL gl)
+  //画出地面
+  public void DrawGround(GL2 gl)
   {
 
 	 // gl.glPushAttrib(GL.GL_CURRENT_BIT);
@@ -237,22 +258,22 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 	//  gl.glPopAttrib();
   }
   
-  //
+  //画出贴图的正方形
   public void Drawcube(GLAutoDrawable drawable)
   {
 
-	  GL gl = drawable.getGL();
-	  gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f);
-	    gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f);
-	    gl.glRotatef(zrot, 0.0f, 0.0f, 1.0f);
+	  GL2 gl = drawable.getGL().getGL2();
+//	  gl.glRotatef(xrot, 1.0f, 0.0f, 0.0f);
+//	    gl.glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+//	    gl.glRotatef(zrot, 0.0f, 0.0f, 1.0f);
 
 	    //gl.glBindTexture(GL.GL_TEXTURE_2D, );//指定和绑定纹理(这里是指定纹理)
 
 	    //gl.glBlendFunc(GL.GL_SRC_ALPHA,GL.GL_ONE);
 	    gl.glColor4d(1,1,1,1);
 	    pngtexture1.bind();
-	    gl.glTexEnvf(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-	    gl.glBegin(GL.GL_QUADS);
+	    gl.glTexEnvf(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+	    gl.glBegin(GL2.GL_QUADS);
 
 
 	    // 左面
@@ -275,8 +296,8 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 	 
   }
   
-  //天空盒
-  public void CreateSkyBox(int a,int wi,int he,int le,GL gl){
+  //天空盒的加载
+  public void CreateSkyBox(int a,int wi,int he,int le,GL2 gl){
 	  
 	  
 	  float width =MAP*wi;
@@ -287,7 +308,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		float z = -MAP -length/2;
 	///////////////////////////////////////////////////////////////////////////////
 		bmptexture[0].bind();
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(1.0f,0.0f); gl.glVertex3f(x+width,y,		 z);
 			gl.glTexCoord2f(1.0f,1.0f); gl.glVertex3f(x+width,y+height,z); 
 			gl.glTexCoord2f(0.0f,1.0f); gl.glVertex3f(x,		y+height,z);
@@ -296,7 +317,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		
 		
 		bmptexture[1].bind();
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(1.0f,0.0f); gl.glVertex3f(x,		y,		 z+length);
 			gl.glTexCoord2f(1.0f,1.0f); gl.glVertex3f(x,		y+height,z+length);
 			gl.glTexCoord2f(0.0f,1.0f); gl.glVertex3f(x+width,y+height,z+length); 
@@ -304,7 +325,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		gl.glEnd();
 
 		bmptexture[2].bind();
-		gl.glBegin(GL.GL_QUADS);	
+		gl.glBegin(GL2.GL_QUADS);	
 			gl.glTexCoord2f(0.0f,1.0f); gl.glVertex3f(x+width,y+height,z);
 			gl.glTexCoord2f(0.0f,0.0f); gl.glVertex3f(x+width,y+height,z+length); 
 			gl.glTexCoord2f(1.0f,0.0f); gl.glVertex3f(x,		y+height,z+length);
@@ -313,7 +334,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		
 		
 		bmptexture[3].bind();
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(1.0f,1.0f); gl.glVertex3f(x,		y+height,z);	
 			gl.glTexCoord2f(0.0f,1.0f); gl.glVertex3f(x,		y+height,z+length); 
 			gl.glTexCoord2f(0.0f,0.0f); gl.glVertex3f(x,		y,		 z+length);
@@ -321,7 +342,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		gl.glEnd();
 		
 		bmptexture[4].bind();
-		gl.glBegin(GL.GL_QUADS);
+		gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(0.0f,0.0f); gl.glVertex3f(x+width,y,		 z);
 			gl.glTexCoord2f(1.0f,0.0f); gl.glVertex3f(x+width,y,		 z+length);
 			gl.glTexCoord2f(1.0f,1.0f); gl.glVertex3f(x+width,y+height,z+length); 
@@ -330,10 +351,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 	    
   }
   
-  
-  
-  
-  
+  //负责响应
   public void keyPressed(KeyEvent e)
   {
 
@@ -410,4 +428,9 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
   public void mouseExited(MouseEvent e)
   {
   }
+
+public void dispose(GLAutoDrawable arg0) {
+	// TODO Auto-generated method stub
+	
+}
 } 
