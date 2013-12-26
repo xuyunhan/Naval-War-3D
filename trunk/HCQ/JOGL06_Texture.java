@@ -9,6 +9,8 @@ import javax.media.opengl.glu.GLU;
 
 
 
+import OBJLoader.OBJModel;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 //import com.sun.opengl.util.GLUT;
@@ -50,7 +52,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
   float focus[] = new float[3];//摄像机焦点位置
   float camera[] = new float[3];//摄像机位置
   int viewangle;
-  
+  private OBJModel model;
   float	 g_eye[]= new float[3];
   float	 g_look[]= new float[3];
   float	 rad_xz;	
@@ -72,6 +74,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
     canvas.addKeyListener(this);
     canvas.addMouseListener(this);
     getContentPane().add(canvas);
+   // model = new OBJModel("formula", 30, gl, true);
   }
 
   //程序的调用的主入口
@@ -103,7 +106,7 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);			// 告诉系统对透视进行修正
 	    animator=new Animator(canvas);//实例化对canvas，刷新
-	//    model = new OBJModel(modelName, maxSize, gl, true);
+	    model = new OBJModel(modelName, maxSize, gl, true);
 	    
 	    focus[0]=7.0f;
 		focus[1]=0.0f;
@@ -179,11 +182,22 @@ public class JOGL06_Texture extends JFrame implements GLEventListener, KeyListen
     
  */
 //    model.draw(gl);
-    gl.glFlush();
+    
+    
+    
+ //   gl.glEnable(GL.GL_TEXTURE_2D);
     camera();
-    CreateSkyBox(3,6,3,6,gl);
+    //   gl.glDisable(GL.GL_TEXTURE_2D);
+    gl.glPushMatrix();
     DrawGround(gl);
     Drawcube(drawable);
+    CreateSkyBox(3,6,3,6,gl);
+    gl.glTranslated(0.0,1.0,0.0);
+    model.draw(gl);
+    gl.glPopMatrix();
+    gl.glFlush();
+   
+    
 
   }
 
