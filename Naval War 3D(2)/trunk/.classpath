@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/桌面/truck/trunk/jogl-2.0-windows-i586/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="E:/桌面/truck/trunk/jogl-2.0-windows-i586/lib/jogl.all.jar"/>
+	<classpathentry kind="lib" path="E:/桌面/truck/trunk/jogl-2.0-windows-i586/lib/nativewindow.all.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:/桌面/truck/trunk/jogl-2.0-windows-i586/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/桌面/truck/trunk/jogl-2.0-windows-i586/lib/newt.all.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
