@@ -23,7 +23,7 @@ import com.sun.opengl.util.texture.*;
 
 public class Materials
 {
-  private static final String MODEL_DIR = "./src/models/";
+  private static final String MODEL_DIR = "models/";
 
   private ArrayList<Material> materials;
      // stores the Material objects built from the MTL file data
