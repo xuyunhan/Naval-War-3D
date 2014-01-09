@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/音乐播放器/lib/basicplayer2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/音乐播放器/lib/jl0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/音乐播放器/lib/mp3spi1.9.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/音乐播放器/lib/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/jogl配置/jogl-2.0-windows-i586/lib/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/jogl配置/jogl-2.0-windows-i586/lib/jogl.all.jar"/>
 	<classpathentry kind="lib" path="C:/Users/lenovo/Desktop/jogl配置/jogl-2.0-windows-i586/lib/nativewindow.all.jar">

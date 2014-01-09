@@ -1,5 +1,7 @@
 package HCQ;
 import com.sun.opengl.util.awt.TextRenderer;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.*;
 import java.text.*;
@@ -28,6 +30,23 @@ public class Counter {
   private int fpsWidth;
   private int fpsHeight;
   private int fpsOffset;
+  
+  public String Intextup = "舰载炮:";
+  public String Intextdown = "信息:";
+  private int xsit;
+  private int ysit;
+  
+  //弹道
+  public float bulletX;
+  public float bulletY;
+  public float bulletZ;
+  
+  public String XJG = "";
+  
+
+//得到物品显示
+  public int inforYN = 0;
+   public String Strinfor;
   
   /** Creates a new FPSCounter with the given font size. An OpenGL
       context must be current at the time the constructor is called.
@@ -151,23 +170,39 @@ public class Counter {
       }
 
       //Text位置
-      renderer.draw(Text, x-20, y+490);
+      renderer.setColor(0.5f,1f,0.7f,0.8f);
+      renderer.draw(Text, x-670, y+510);
+
+      renderer.draw(Intextup, 625,35);
+      renderer.draw(Intextdown, 625, 10);
+      
+      renderer.draw("⊙", 401, 290);
+      renderer.draw("弹道X:"+bulletX, 658, 440);
+      renderer.draw("弹道Y:"+bulletY, 658, 410);
+      renderer.draw("弹道Z:"+bulletZ, 658, 380);
+      
+      renderer.draw(XJG, 670, 330);
       
       renderer.endRendering();
+      
+      
+      
     }
+
   }
   
-  //重载draw
-  public void draw(String Text,int x,int y) {
+  //
+  public void drawclean() {
     
-	  if (Text != null) {
-	      renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-	      
-	      //Text位置
-	      renderer.draw(Text, x, y);
-	      
-	      renderer.endRendering();
-	    }
+	  renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+      //
+      if(inforYN>0){
+    	  renderer.draw(Strinfor, 150, 330);
+    	  renderer.setColor(Color.green);
+    	  inforYN--;
+      }
+      renderer.endRendering();
+
   }
 
   private void recomputeFPSSize(float fps) {
