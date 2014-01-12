@@ -601,18 +601,10 @@ final public class GLFFTOceanSimulation {
 		gl.glTexCoordPointer(4, GL2.GL_FLOAT, 0, _simulationObj._dirTextureCoordBuffer);
 		_oceanTexture.bind();
 		
-		gl.glTranslatef(60, -2, -100);
-		for (int i = 0;i < 10; i++) {
-			for (int j = 0;j < 10;j++) {
-				gl.glDrawElements(	GL2.GL_TRIANGLES, //绘图模式
-						_indicesBuffer.capacity(),//索引个数
-						GL2.GL_UNSIGNED_INT, //顶点索引Buffer类型
-						_indicesBuffer);//索引Buffer
-				gl.glTranslatef(0, 0, 15);
-		}
-			gl.glTranslatef(-15, 0, -150);
-		}
-	
+		gl.glDrawElements(	GL2.GL_TRIANGLES, //绘图模式
+							_indicesBuffer.capacity(),//索引个数
+							GL2.GL_UNSIGNED_INT, //顶点索引Buffer类型
+							_indicesBuffer);//索引Buffer
 			
 		//_lightSimulation.SetLight(gl);
 		gl.glLightModeli(GL2.GL_LIGHT_MODEL_COLOR_CONTROL,GL2.GL_SEPARATE_SPECULAR_COLOR);

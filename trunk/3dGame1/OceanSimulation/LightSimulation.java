@@ -62,10 +62,10 @@ public class LightSimulation {
 		
 		gl.glLightf(GL2.GL_LIGHT1,GL2.GL_SPOT_EXPONENT,2.0f);
 		
-		//gl.glEnable(GL2.GL_LIGHTING);//启用光照
-		//gl.glEnable(GL2.GL_LIGHT0);
-		//gl.glEnable(GL2.GL_LIGHT1);
-		//gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_LIGHTING);//启用光照
+		gl.glEnable(GL2.GL_LIGHT0);
+		gl.glEnable(GL2.GL_LIGHT1);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
 		
 		gl.glLightModeli(GL2.GL_LIGHT_MODEL_COLOR_CONTROL,GL2.GL_SEPARATE_SPECULAR_COLOR);
 		
